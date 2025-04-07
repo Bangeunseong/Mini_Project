@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
-    public GameObject cardPrefab;
+    public GameObject CardPrefab;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,12 +31,12 @@ public class BoardController : MonoBehaviour
                 position.x = xOffset;
                 position.y += 1.4f;
             }
-            GameObject card = Instantiate(cardPrefab, transform);
+            GameObject card = Instantiate(CardPrefab, transform);
             card.transform.position = position;
             card.GetComponent<CardController>().Set(arr[i]);
             position.x += 1.4f;
         }
 
-        GameManager.instance.cardCount = arr.Length;
+        GameManager.Instance.CardCount = arr.Length;
     }
 }

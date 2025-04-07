@@ -6,8 +6,8 @@ public class AudioManager : MonoBehaviour
     private AudioSource audioSource;
     private static AudioManager m_instance;
 
-    public AudioClip clip;
-    public static AudioManager instance
+    public AudioClip Clip;
+    public static AudioManager Instance
     {
         get
         {
@@ -18,7 +18,7 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance != this) Destroy(gameObject);
+        if (Instance != this) Destroy(gameObject);
         else DontDestroyOnLoad(gameObject);
     }
 
@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.clip = clip;
+        audioSource.clip = Clip;
         audioSource.Play();
     }
 
