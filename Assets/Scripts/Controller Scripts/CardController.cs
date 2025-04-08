@@ -28,15 +28,15 @@ public class CardController : MonoBehaviour
         {
             ParentId = index / 2;
             Category = category;
-            Index = index % 2;
-            Image.sprite = memberTable.GetMemberInfoById(ParentId).PairOfImages[Category].Values[Index].Image;
+            Index = index;
+            Image.sprite = memberTable.GetMemberInfoById(ParentId).PairOfImages[Category].Values[index % 2].Image;
         }
         else
         {
             Category = category;
             Id = (index % 10) / 2;
-            Index = index % 2;
-            Image.sprite = memberTable.GetMemberInfoById(Id).Selfies[Index];
+            Index = index;
+            Image.sprite = memberTable.GetMemberInfoById(Id).Selfies[index % 2];
         }
     }
 

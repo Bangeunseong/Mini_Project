@@ -62,7 +62,14 @@ public class GameManager : MonoBehaviour
 
     public void MatchCards()
     {
-        if (FirstCard.Index == SecondCard.Index)
+        if ((FirstCard.Index >= 10 && SecondCard.Index >= 10) || (FirstCard.Index < 10 && SecondCard.Index < 10)) 
+        { 
+            FirstCard.CloseCard(); SecondCard.CloseCard(); 
+            FirstCard = SecondCard = null;
+            return;
+        }
+
+        if (FirstCard.Id == SecondCard.ParentId)
         {
             audioSource.PlayOneShot(Clip);
             FirstCard.DestroyCard(); SecondCard.DestroyCard();
@@ -70,7 +77,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            FirstCard.CloseCard(); SecondCard.CloseCard();    
+            FirstCard.CloseCard(); SecondCard.CloseCard();
         }
         FirstCard = SecondCard = null;
     }
