@@ -22,6 +22,7 @@ public class CardController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
+<<<<<<< HEAD:Assets/Scripts/Controller Scripts/CardController.cs
     public void Set(int category, int index) {
         MemberTable memberTable = TableManager.Instance.GetTable<MemberTable>();
         if (index < 10)
@@ -38,6 +39,11 @@ public class CardController : MonoBehaviour
             Index = index % 2;
             Image.sprite = memberTable.GetMemberInfoById(Id).Selfies[Index];
         }
+=======
+    public void Set(int index) { 
+        this.Index = index;
+        Image.sprite = Resources.Load<Sprite>($"rtan{index}");
+>>>>>>> 8a1c4361bb177c4ccd82ad7d8d83e40c3a91d382:Assets/Scripts/CardController.cs
     }
 
     public void Open()
