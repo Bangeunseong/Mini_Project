@@ -119,53 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &18384467
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 18384469}
-  - component: {fileID: 18384468}
-  m_Layer: 0
-  m_Name: AdManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &18384468
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18384467}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d118851fa68edb844975b2da86329cfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _androidGameId: 5807367
-  _iOSGameId: 5807366
-  _testMode: 1
---- !u!4 &18384469
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 18384467}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &302558323
 GameObject:
   m_ObjectHideFlags: 0
@@ -475,12 +428,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fcda53911e70e4abe8b4a645f0b901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstCard: {fileID: 0}
-  secondCard: {fileID: 0}
-  timeText: {fileID: 405137268}
-  clip: {fileID: 8300000, guid: 2aa95826d3b3751438869d5e18362b40, type: 3}
-  endText: {fileID: 1229722796}
-  cardCount: 0
+  FirstCard: {fileID: 0}
+  SecondCard: {fileID: 0}
+  TimeText: {fileID: 0}
+  Clip: {fileID: 0}
+  EndText: {fileID: 0}
+  CardCount: 0
 --- !u!4 &918215626
 Transform:
   m_ObjectHideFlags: 0
@@ -959,7 +912,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d096059115a214fbe70e4bd3a96094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardPrefab: {fileID: 6274888138571494986, guid: ecc9c615deb7a4d44967e15f83134256, type: 3}
+  CardPrefab: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -970,4 +923,3 @@ SceneRoots:
   - {fileID: 302558327}
   - {fileID: 1048960336}
   - {fileID: 918215626}
-  - {fileID: 18384469}

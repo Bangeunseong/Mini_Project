@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfb93c520133c842a1481937ea767b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip: {fileID: 8300000, guid: 0e02211433e357445a2a100d91e3637c, type: 3}
+  Clip: {fileID: 0}
 --- !u!82 &1711782992
 AudioSource:
   m_ObjectHideFlags: 0
@@ -848,7 +848,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uB974\uD0C4\uC774\uB97C \uCC3E\uC544\uB77C"
+  m_Text: Match The Mate
 --- !u!222 &1743620846
 CanvasRenderer:
   m_ObjectHideFlags: 0
