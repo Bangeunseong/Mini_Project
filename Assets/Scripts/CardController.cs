@@ -21,7 +21,7 @@ public class CardController : MonoBehaviour
 
     public void Set(int index) { 
         this.Index = index;
-        Image.sprite = Resources.Load<Sprite>($"rtan{index}");
+        Image.sprite = Resources.Load<Sprite>($"Sprites_Origin/rtan{index}");
     }
 
     public void Open()
