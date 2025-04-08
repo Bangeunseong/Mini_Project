@@ -11,8 +11,9 @@ public class GameManager : MonoBehaviour
     public Text TimeText;
     public AudioClip Clip;
     public GameObject EndText;
-    public bool IsGameActive {  get; private set; }
+    public bool IsGameActive { get; private set; }
     public int Wave { get; private set; }
+    public int Category {  get; private set; }
     public int CardCount;
     public static GameManager Instance
     {
@@ -28,6 +29,9 @@ public class GameManager : MonoBehaviour
     {
         if (!PlayerPrefs.HasKey("Wave")) Wave = 1;
         else Wave = PlayerPrefs.GetInt("Wave");
+
+        if (!PlayerPrefs.HasKey("Category")) Category = 0;
+        else Category = PlayerPrefs.GetInt("Category");
 
         if (Instance != this) Destroy(gameObject);
     }
