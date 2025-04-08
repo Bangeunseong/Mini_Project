@@ -493,10 +493,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 790a869b9b0c1c84f80b1566c94539a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  image: {fileID: 7718820288371531964}
-  front: {fileID: 6745068320685410809}
-  back: {fileID: 1930215282502182658}
-  clip: {fileID: 8300000, guid: 569318ae469c6924aa3083cc2e05aa40, type: 3}
+  Image: {fileID: 0}
+  Front: {fileID: 6745068320685410809}
+  Back: {fileID: 1930215282502182658}
+  Clip: {fileID: 8300000, guid: 569318ae469c6924aa3083cc2e05aa40, type: 3}
 --- !u!1 &6745068320685410809
 GameObject:
   m_ObjectHideFlags: 0
