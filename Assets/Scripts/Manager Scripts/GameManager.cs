@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(!IsGameActive) { return; }
+
         if(CardCount <= 0) { IsGameActive = false; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", Wave++); return; }
         if(startTime >= 30) { IsGameActive = false; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", 1); return; }
         startTime += Time.deltaTime;
@@ -61,7 +62,7 @@ public class GameManager : MonoBehaviour
 
     public void MatchCards()
     {
-        if(FirstCard.Index == SecondCard.Index) 
+        if (FirstCard.Index == SecondCard.Index)
         {
             audioSource.PlayOneShot(Clip);
             FirstCard.DestroyCard(); SecondCard.DestroyCard();

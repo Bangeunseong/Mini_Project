@@ -5,8 +5,11 @@ public class CardController : MonoBehaviour
 {
     private AudioSource _audioSource;
     private Animator _animator;
-    
+
+    public int Id { get; private set; }
+    public int ParentId { get; private set; }
     public int Index { get; private set; }
+    public int Category { get; private set; }
     public SpriteRenderer Image;
     public GameObject Front;
     public GameObject Back;
@@ -19,9 +22,22 @@ public class CardController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void Set(int index) { 
-        this.Index = index;
-        Image.sprite = Resources.Load<Sprite>($"Sprites_Origin/rtan{index}");
+    public void Set(int category, int index) {
+        MemberTable memberTable = TableManager.Instance.GetTable<MemberTable>();
+        if (index < 10)
+        {
+            ParentId = index / 2;
+            Category = category;
+            Index = index % 2;
+            Image.sprite = memberTable.GetMemberInfoById(ParentId).PairOfImages[Category].Values[Index].Image;
+        }
+        else
+        {
+            Category = category;
+            Id = (index % 10) / 2;
+            Index = index % 2;
+            Image.sprite = memberTable.GetMemberInfoById(Id).Selfies[Index];
+        }
     }
 
     public void Open()
