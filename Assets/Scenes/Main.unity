@@ -843,8 +843,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1229722801}
-        m_TargetAssemblyTypeName: RewardedButton, Assembly-CSharp
-        m_MethodName: ShowAd
+        m_TargetAssemblyTypeName: RetryController, Assembly-CSharp
+        m_MethodName: RestartGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -863,7 +863,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1229722796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 394829f8e1d90b24e82dba4c88657d15, type: 3}
+  m_Script: {fileID: 11500000, guid: 95c2b842fba78ff4696afa7fc5349e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1430618892

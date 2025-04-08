@@ -57,8 +57,15 @@ public class GameManager : MonoBehaviour
     {
         if(!IsGameActive) { return; }
 
-        if(CardCount <= 0) { IsGameActive = false; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", Wave++); return; }
-        if(startTime >= 30) { IsGameActive = false; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", 1); return; }
+        if(CardCount <= 0) { IsGameActive = false; EndText.GetComponent<Text>().text = "¼º°ø!"; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", Wave++); return; }
+        if(startTime >= 30) 
+        { 
+            IsGameActive = false;
+            EndText.GetComponent<Text>().text = "Âì..";
+            EndText.SetActive(true); 
+            PlayerPrefs.SetInt("Wave", 1); 
+            return; 
+        }
         startTime += Time.deltaTime;
         UpdateTime();
     }
@@ -77,15 +84,25 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (FirstCard.Id == SecondCard.ParentId)
+        if(FirstCard.Id < 0)
         {
-            audioSource.PlayOneShot(Clip);
-            FirstCard.DestroyCard(); SecondCard.DestroyCard();
-            CardCount -= 2;
+            if(SecondCard.Id == FirstCard.ParentId)
+            {
+                audioSource.PlayOneShot(Clip);
+                FirstCard.DestroyCard(); SecondCard.DestroyCard();
+                CardCount -= 2;
+            }
+            else FirstCard.CloseCard(); SecondCard.CloseCard();
         }
         else
         {
-            FirstCard.CloseCard(); SecondCard.CloseCard();
+            if (FirstCard.Id == SecondCard.ParentId)
+            {
+                audioSource.PlayOneShot(Clip);
+                FirstCard.DestroyCard(); SecondCard.DestroyCard();
+                CardCount -= 2;
+            }
+            else FirstCard.CloseCard(); SecondCard.CloseCard();
         }
         FirstCard = SecondCard = null;
     }
