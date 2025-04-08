@@ -477,6 +477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   FirstCard: {fileID: 0}
   SecondCard: {fileID: 0}
+<<<<<<< HEAD
 <<<<<<< Updated upstream
   TimeText: {fileID: 0}
   Clip: {fileID: 0}
@@ -486,6 +487,11 @@ MonoBehaviour:
   Clip: {fileID: 0}
   EndText: {fileID: 1229722796}
 >>>>>>> Stashed changes
+=======
+  TimeText: {fileID: 0}
+  Clip: {fileID: 0}
+  EndText: {fileID: 0}
+>>>>>>> parent of db2bc9d (Add : Table Manager, Category Manager, Member Data Table)
   CardCount: 0
 --- !u!4 &918215626
 Transform:
@@ -946,9 +952,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
 <<<<<<< Updated upstream
   CardPrefab: {fileID: 0}
+<<<<<<< HEAD
 =======
   CardPrefab: {fileID: 6274888138571494986, guid: ecc9c615deb7a4d44967e15f83134256, type: 3}
 >>>>>>> Stashed changes
+=======
+>>>>>>> parent of db2bc9d (Add : Table Manager, Category Manager, Member Data Table)
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
