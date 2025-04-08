@@ -1,6 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum Category
+{
+    Food,
+    Game,
+    Hobby,
+    Movie,
+}
+
 public class GameManager : MonoBehaviour
 {
     private float startTime;
@@ -13,7 +21,7 @@ public class GameManager : MonoBehaviour
     public GameObject EndText;
     public bool IsGameActive { get; private set; }
     public int Wave { get; private set; }
-    public int Category {  get; private set; }
+    public Category Category { get; private set; }
     public int CardCount;
     public static GameManager Instance
     {
@@ -30,8 +38,8 @@ public class GameManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("Wave")) Wave = 1;
         else Wave = PlayerPrefs.GetInt("Wave");
 
-        if (!PlayerPrefs.HasKey("Category")) Category = 0;
-        else Category = PlayerPrefs.GetInt("Category");
+        if (!PlayerPrefs.HasKey("Category")) Category = Category.Food;
+        else Category = (Category)PlayerPrefs.GetInt("Category");
 
         if (Instance != this) Destroy(gameObject);
     }
@@ -49,8 +57,15 @@ public class GameManager : MonoBehaviour
     {
         if(!IsGameActive) { return; }
 
-        if(CardCount <= 0) { IsGameActive = false; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", Wave++); return; }
-        if(startTime >= 30) { IsGameActive = false; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", 1); return; }
+        if(CardCount <= 0) { IsGameActive = false; EndText.GetComponent<Text>().text = "¼º°ø!"; EndText.SetActive(true); PlayerPrefs.SetInt("Wave", Wave++); return; }
+        if(startTime >= 30) 
+        { 
+            IsGameActive = false;
+            EndText.GetComponent<Text>().text = "Âì..";
+            EndText.SetActive(true); 
+            PlayerPrefs.SetInt("Wave", 1); 
+            return; 
+        }
         startTime += Time.deltaTime;
         UpdateTime();
     }
@@ -69,15 +84,25 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        if (FirstCard.Id == SecondCard.ParentId)
+        if(FirstCard.Id < 0)
         {
-            audioSource.PlayOneShot(Clip);
-            FirstCard.DestroyCard(); SecondCard.DestroyCard();
-            CardCount -= 2;
+            if(SecondCard.Id == FirstCard.ParentId)
+            {
+                audioSource.PlayOneShot(Clip);
+                FirstCard.DestroyCard(); SecondCard.DestroyCard();
+                CardCount -= 2;
+            }
+            else FirstCard.CloseCard(); SecondCard.CloseCard();
         }
         else
         {
-            FirstCard.CloseCard(); SecondCard.CloseCard();
+            if (FirstCard.Id == SecondCard.ParentId)
+            {
+                audioSource.PlayOneShot(Clip);
+                FirstCard.DestroyCard(); SecondCard.DestroyCard();
+                CardCount -= 2;
+            }
+            else FirstCard.CloseCard(); SecondCard.CloseCard();
         }
         FirstCard = SecondCard = null;
     }

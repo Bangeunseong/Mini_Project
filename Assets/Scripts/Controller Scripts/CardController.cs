@@ -26,6 +26,7 @@ public class CardController : MonoBehaviour
         MemberTable memberTable = TableManager.Instance.GetTable<MemberTable>();
         if (index < 10)
         {
+            Id = -1;
             ParentId = index / 2;
             Category = category;
             Index = index;
@@ -35,6 +36,7 @@ public class CardController : MonoBehaviour
         {
             Category = category;
             Id = (index % 10) / 2;
+            ParentId = -1;
             Index = index;
             Image.sprite = memberTable.GetMemberInfoById(Id).Selfies[index % 2];
         }
