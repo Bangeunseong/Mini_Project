@@ -18,6 +18,7 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
+        // Prevent Double Init. of AudioManager
         if (Instance != this) Destroy(gameObject);
         else DontDestroyOnLoad(gameObject);
     }
@@ -25,14 +26,8 @@ public class AudioManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
         audioSource.clip = Clip;
         audioSource.Play();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
