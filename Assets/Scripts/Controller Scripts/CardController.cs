@@ -23,8 +23,10 @@ public class CardController : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void Set(int category, int index) {
+    public void Set(int category, int index)
+    {
         MemberTable memberTable = TableManager.Instance.GetTable<MemberTable>();
+
         if (index < 10)
         {
             Id = -1;
@@ -47,14 +49,12 @@ public class CardController : MonoBehaviour
     {
         if (!GameManager.Instance.IsGameActive) { return; }
 
-
         _audioSource.PlayOneShot(Clip);
         _animator.SetBool("IsOpen", true);
         Front.SetActive(true);
         Back.SetActive(false);
         if (GameManager.Instance.FirstCard == null) 
-        { 
-            if(Index < 10) { }
+        {
             GameManager.Instance.FirstCard = this; 
         }
         else
