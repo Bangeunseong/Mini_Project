@@ -107,17 +107,17 @@ public class GameManager : MonoBehaviour
             // Set Game as inactive, disable time text
             IsGameActive = false;
             _timeAnimator.SetBool("IsDown", false);
-            
+
             // Evaluate which score is best, then refresh Text UI
             float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1);
-            if (bestScore > startTime || bestScore < 0) { 
+            if (bestScore > startTime || bestScore < 0)
+            {
                 bestScore = startTime;
-                PlayerPrefs.SetFloat(Category.ToString(), startTime); 
+                PlayerPrefs.SetFloat(Category.ToString(), startTime);
             }
-            
+
             _currentScore.GetComponent<Text>().text = $"현재 기록 : {startTime.ToString("N2")}";
             _highScore.GetComponent<Text>().text = $"최고 기록 : {bestScore.ToString("N2")}";
-            
             // Activate EndPanel
             _endPanel.SetActive(true);
             return; 
