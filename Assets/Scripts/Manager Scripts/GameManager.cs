@@ -14,7 +14,6 @@ public enum Category
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private float _hintDelayTime = 0.5f;
     [SerializeField] private Sprite _off;
     [SerializeField] private Sprite _on;
     [SerializeField] private GameObject _hintPanel;
@@ -23,7 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endText;
     [SerializeField] private GameObject _hintButton;
-    [SerializeField] private float endTime = 60f;
+    // [SerializeField] private float endTime = 60f;
 
     private float startTime;
     private static GameManager m_instance;
@@ -75,7 +74,7 @@ public class GameManager : MonoBehaviour
             else {
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
-                img.sprite = _on;
+                img.sprite = _off;
                 _hintPanel.SetActive(false); 
             }
         });
@@ -104,15 +103,16 @@ public class GameManager : MonoBehaviour
             return; 
         }
         
+        // Deprecated
         // If Time passes over endTime, game ends.
-        if(startTime >= endTime) 
+        /*if(startTime >= endTime) 
         { 
             IsGameActive = false;
             _endText.GetComponent<Text>().text = "ย์..";
             _endText.SetActive(true);
             PlayerPrefs.SetFloat(Category.ToString(), startTime);
             return; 
-        }
+        }*/
 
         // Update Time
         startTime += Time.deltaTime;
