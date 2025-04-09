@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite _on;
     [SerializeField] private GameObject _hintPanel;
     [SerializeField] private List<GameObject> _hintObjects;
+    [SerializeField] private GameObject _timeLabel;
     [SerializeField] private Text _timeText;
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endPanel;
@@ -30,7 +31,8 @@ public class GameManager : MonoBehaviour
     private float startTime;
     private static GameManager m_instance;
     private AudioSource audioSource;
-    
+    private Animator _timeAnimator;
+
     public int CardCount;
     public CardController FirstCard, SecondCard;
     public bool IsHintActive { get; private set; } = false;
@@ -55,6 +57,8 @@ public class GameManager : MonoBehaviour
 
         // If this gameobject is not belong to previously assigned GameManager, destroy it to prevent double init.
         if (Instance != this) Destroy(gameObject);
+
+        _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -62,7 +66,6 @@ public class GameManager : MonoBehaviour
     {
         // Init. Attributes
         startTime = 0;
-        IsGameActive = true;
         audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
         // Initialize Hint Button Action
@@ -89,6 +92,8 @@ public class GameManager : MonoBehaviour
             Image img = Helper.GetComponentHelper<Image>(_hintObjects[i]);
             img.sprite = memberTable.GetMemberInfoById(i / 2).PairOfImages[(int)Category].Values[i % 2].Image;
         }
+
+        StartCoroutine(CountDown(5));
     }
 
     // Update is called once per frame
@@ -100,8 +105,8 @@ public class GameManager : MonoBehaviour
         if(CardCount <= 0) 
         { 
             // Set Game as inactive, disable time text
-            IsGameActive = false; 
-            _timeText.enabled = false;
+            IsGameActive = false;
+            _timeAnimator.SetBool("IsDown", false);
             
             // Evaluate which score is best, then refresh Text UI
             float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1);
@@ -181,4 +186,10 @@ public class GameManager : MonoBehaviour
         // Reset Memory
         FirstCard = SecondCard = null;
     }
+    private IEnumerator CountDown(int _delay)
+    {
+        _timeAnimator.SetBool("IsDown",true);
+        yield return new WaitForSeconds(_delay);
+        IsGameActive = true;
+    }    
 }
