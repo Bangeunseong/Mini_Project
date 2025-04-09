@@ -744,13 +744,13 @@ PlayerSettings:
   hmiLogStartupTiming: 0
   hmiCpuConfiguration: 
   apiCompatibilityLevel: 6
+  captureStartupLogs: {}
   activeInputHandler: 2
-  windowsGamepadBackendHint: 0
-  cloudProjectId: 
+  cloudProjectId: e072f4fe-f61b-45b0-9ef0-f89cce71cdcd
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: 
-  organizationId: 
+  projectName: Mini Project
+  organizationId: bangunseong
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

@@ -6,14 +6,15 @@ public class CardController : MonoBehaviour
     private AudioSource _audioSource;
     private Animator _animator;
 
+    public SpriteRenderer Image;
+    public GameObject Front;
+    public GameObject Back;
+    public GameObject Hint;
+    public AudioClip Clip;
     public int Id { get; private set; }
     public int ParentId { get; private set; }
     public int Index { get; private set; }
     public int Category { get; private set; }
-    public SpriteRenderer Image;
-    public GameObject Front;
-    public GameObject Back;
-    public AudioClip Clip;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,11 +47,16 @@ public class CardController : MonoBehaviour
     {
         if (!GameManager.Instance.IsGameActive) { return; }
 
+
         _audioSource.PlayOneShot(Clip);
         _animator.SetBool("IsOpen", true);
         Front.SetActive(true);
         Back.SetActive(false);
-        if (GameManager.Instance.FirstCard == null) GameManager.Instance.FirstCard = this;
+        if (GameManager.Instance.FirstCard == null) 
+        { 
+            if(Index < 10) { }
+            GameManager.Instance.FirstCard = this; 
+        }
         else
         {
             GameManager.Instance.SecondCard = this;
@@ -60,7 +66,7 @@ public class CardController : MonoBehaviour
 
     IEnumerator DestroyCardRoutine()
     {
-        yield return new WaitForSeconds(1f / GameManager.Instance.Wave);
+        yield return new WaitForSeconds(0.5f);
         Destroy(gameObject);
     }
 
@@ -71,7 +77,7 @@ public class CardController : MonoBehaviour
 
     IEnumerator CloseCardRoutine()
     {
-        yield return new WaitForSeconds(1f / GameManager.Instance.Wave);
+        yield return new WaitForSeconds(0.5f);
         _animator.SetBool("IsOpen", false);
         Front.SetActive(false);
         Back.SetActive(true);
