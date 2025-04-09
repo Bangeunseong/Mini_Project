@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -15,7 +16,8 @@ public class CategoryManager : MonoBehaviour
         } 
     }
 
-    public List<Button> Buttons;
+    public List<GameObject> Buttons;
+    public List<GameObject> Records;
 
     void Awake()
     {
@@ -24,17 +26,13 @@ public class CategoryManager : MonoBehaviour
 
     void Start()
     {
-        foreach(Button b in Buttons)
+        foreach(Category category in Enum.GetValues(typeof(Category)))
         {
-            switch(b.name)
-            {
-                case "Food" : b.onClick.AddListener(()=> StartMainGame(0)); break;
-                case "Game" : b.onClick.AddListener(()=>StartMainGame(1)); break;
-                case "Hobby": b.onClick.AddListener(()=> StartMainGame(2)); break;
-                case "Movie": b.onClick.AddListener(()=>StartMainGame(3)); break;
-                default: Debug.LogError($"Does not match category name with button name : {b.name} "); break;
-            }
-        }    
+            Button btn = Helper.GetComponentHelper<Button>(Buttons[(int)category]);
+            Text record = Helper.GetComponentHelper<Text>(Records[(int)category]);
+            btn.onClick.AddListener(() => StartMainGame((int)category));
+            record.text = PlayerPrefs.GetFloat(category.ToString(), 0f).ToString("N2");
+        }   
     }
 
     private void StartMainGame(int category)
