@@ -16,7 +16,7 @@ public class BackgroundController : MonoBehaviour
         {
             case Category.Food: foreach(GameObject go in _backgrounds) { go.GetComponent<MeshRenderer>().material = _materials[(int)Category.Food]; } break;
             case Category.Hobby: foreach(GameObject go in _backgrounds) { go.GetComponent<MeshRenderer>().material = _materials[(int)Category.Hobby]; } break;
-            case Category.Game: foreach(GameObject go in _backgrounds) { go.GetComponent<MeshRenderer>().material = _materials[(int)Category.Hobby]; } break;
+            case Category.Game: foreach(GameObject go in _backgrounds) { go.GetComponent<MeshRenderer>().material = _materials[(int)Category.Game]; } break;
             case Category.Movie: foreach(GameObject go in _backgrounds) { go.GetComponent<MeshRenderer>().material = _materials[(int)Category.Movie]; } break;
             default: break;
         }
