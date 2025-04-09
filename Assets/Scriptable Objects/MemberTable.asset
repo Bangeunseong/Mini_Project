@@ -114,8 +114,8 @@ MonoBehaviour:
     - Key: 2
       Values:
       - ParentId: 2
-        Description: 
-        Image: {fileID: 0}
+        Description: "\uAE00\uC4F0\uAE30"
+        Image: {fileID: 21300000, guid: bc7a91bd109e3634596a61246a089ef4, type: 3}
       - ParentId: 2
         Description: 
         Image: {fileID: 0}

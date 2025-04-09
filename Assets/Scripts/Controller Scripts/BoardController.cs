@@ -21,7 +21,7 @@ public class BoardController : MonoBehaviour
         int cardCountRow = 4, cardCountColumn = 5;
         int cardCount = cardCountRow * cardCountColumn;
         float xOffset = (-(cardCountRow * 1.3f + (cardCountRow - 1) * 0.1f) + 1.3f) / 2f;
-        float yOffset = -3f;
+        float yOffset = -4f;
 
         // Image Randomization
         int[] arr = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
