@@ -496,6 +496,7 @@ MonoBehaviour:
   Image: {fileID: 7718820288371531964}
   Front: {fileID: 6745068320685410809}
   Back: {fileID: 1930215282502182658}
+  Hint: {fileID: 0}
   Clip: {fileID: 8300000, guid: 569318ae469c6924aa3083cc2e05aa40, type: 3}
 --- !u!1 &6745068320685410809
 GameObject:
@@ -578,7 +579,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1, y: 0.63773584}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 0
