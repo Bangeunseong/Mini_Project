@@ -1,23 +1,21 @@
-using System.Collections.Generic;
 using System.Collections;
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private List<AudioClip> _mainBGMs;
-  
-
     private AudioSource audioSource;
 
-    public bool IsAudioSourseChanged {get; set;} = false;
-
+    public bool IsAudioSourceChanged { get; set; } = false;
+    
     private static AudioManager m_instance;
     public static AudioManager Instance
     {
         get
         {
-            if(m_instance == null) m_instance = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+            if(m_instance == null) 
+                m_instance = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
             return m_instance;
         }
     }
@@ -40,26 +38,26 @@ public class AudioManager : MonoBehaviour
 
     public IEnumerator FadeOutSound(float duration)
     {
-        float starttVolume = audioSource.volume;
+        float startVolume = audioSource.volume;
         float time = 0f;
         while(time < duration)
         {
             time += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(starttVolume, 0f, time / duration); //시작점 a에서 종료 b까지 duration 동안 줄일 것.
+            audioSource.volume = Mathf.Lerp(startVolume, 0f, time / duration);
             yield return null;
         }
 
-        audioSource.velocityUpdateMode = 0f;
+        audioSource.volume = 0f;
         audioSource.Stop();
 
-        IsAudioSourseChanged = true;
+        IsAudioSourceChanged = true;
     }
 
     public IEnumerator FadeInSound(int category, float duration)
     {
-        IsAudioSourseChanged = false;
-        
-        audioSource.clip = _mainBGMs[(int)category];
+        IsAudioSourceChanged = false;
+
+        audioSource.clip = _mainBGMs[category];
         audioSource.Play();
 
         float time = 0f;

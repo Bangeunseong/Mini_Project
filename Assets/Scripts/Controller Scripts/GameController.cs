@@ -7,18 +7,19 @@ public class GameController : MonoBehaviour
     {
         SceneManager.LoadScene("Category");
     }
+
     public void GoToStart()
     {
-        StartCoroutine(AudioManager.Instance.FadeOutSound(0)); 
+        StartCoroutine(AudioManager.Instance.FadeOutSound(0));
         SceneManager.LoadScene("Start");
-        StartCoroutine(AudioManager.Instance.FadeInSound(0,0));
+        StartCoroutine(AudioManager.Instance.FadeInSound(0, 0));
     }
 
     public void GoToCategory()
-    {   
-        StartCoroutine(AudioManager.Instance.FadeOutSound(0));  
+    {
+        StartCoroutine(AudioManager.Instance.FadeOutSound(0));
         SceneManager.LoadScene("Category");
-        StartCoroutine(AudioManager.Instance.FadeInSound(0,0));
+        StartCoroutine(AudioManager.Instance.FadeInSound(0, 0));
     }
 
     public void RestartGame()
