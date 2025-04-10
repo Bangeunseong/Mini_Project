@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,30 +15,29 @@ public enum Category
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private float _hintDelayTime = 0.5f;
     [SerializeField] private Sprite _off;
     [SerializeField] private Sprite _on;
     [SerializeField] private GameObject _hintPanel;
     [SerializeField] private List<GameObject> _hintObjects;
+    [SerializeField] private GameObject _timeLabel;
     [SerializeField] private Text _timeText;
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endPanel;
-    [SerializeField] private GameObject _timeLabel;
-    [SerializeField] private Text _endText;
+    [SerializeField] private GameObject _currentScore;
+    [SerializeField] private GameObject _highScore;
     [SerializeField] private GameObject _hintButton;
-    [SerializeField] private float endTime = 60f;
+    // [SerializeField] private float endTime = 60f;
 
     private float startTime;
     private static GameManager m_instance;
     private AudioSource audioSource;
     private Animator _timeAnimator;
-    
     public int CardCount;
     public CardController FirstCard, SecondCard;
     public bool IsHintActive { get; private set; } = false;
     public bool IsGameActive { get; private set; }
     public Category Category { get; private set; }
-    
+
     public static GameManager Instance
     {
         get { 
@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         // If this gameobject is not belong to previously assigned GameManager, destroy it to prevent double init.
         if (Instance != this) Destroy(gameObject);
 
+        // Initialize Time Label Animator
         _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
     }
 
@@ -65,7 +66,7 @@ public class GameManager : MonoBehaviour
     {
         // Init. Attributes
         startTime = 0;
-        audioSource = GetComponent<AudioSource>();
+        audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
         // Initialize Hint Button Action
         Button button = Helper.GetComponentHelper<Button>(_hintButton);
@@ -80,7 +81,7 @@ public class GameManager : MonoBehaviour
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _off;
-                _hintPanel.SetActive(false);
+                _hintPanel.SetActive(false); 
             }
         });
 
@@ -92,6 +93,7 @@ public class GameManager : MonoBehaviour
             img.sprite = memberTable.GetMemberInfoById(i / 2).PairOfImages[(int)Category].Values[i % 2].Image;
         }
 
+        // Start Game After 5 seconds and move down time label
         StartCoroutine(CountDown(5));
     }
 
@@ -103,29 +105,35 @@ public class GameManager : MonoBehaviour
         // If All cards destroyed, game ends.
         if(CardCount <= 0) 
         { 
-            float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1.0f);
-            if (bestScore > startTime || bestScore < 0){
-                _endText.text = startTime.ToString("N2");
-                PlayerPrefs.SetFloat(Category.ToString(), startTime);
-            }
-            else {
-                _endText.text = bestScore.ToString("N2");
-            }
+            // Set Game as inactive, disable time text, and move up time label
             IsGameActive = false;
+            _timeAnimator.SetBool("IsDown_b", false);
+            
+            // Evaluate which score is best, then refresh Text UI
+            float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1);
+            if (bestScore > startTime || bestScore < 0) { 
+                bestScore = startTime;
+                PlayerPrefs.SetFloat(Category.ToString(), startTime); 
+            }
+            
+            _currentScore.GetComponent<Text>().text = $"���� ��� : {startTime.ToString("N2")}";
+            _highScore.GetComponent<Text>().text = $"�ְ� ��� : {bestScore.ToString("N2")}";
+            
+            // Activate EndPanel
             _endPanel.SetActive(true);
-
-            _timeAnimator.SetBool("IsDown", false);
-
-            return;
+            return; 
         }
         
+        // Deprecated
         // If Time passes over endTime, game ends.
-        // if(startTime >= endTime) 
-        // { 
-        //     IsGameActive = false;
-        //     _endPanel.SetActive(true);
-        //     return; 
-        // }
+        /*if(startTime >= endTime) 
+        { 
+            IsGameActive = false;
+            _endText.GetComponent<Text>().text = "��..";
+            _endText.SetActive(true);
+            PlayerPrefs.SetFloat(Category.ToString(), startTime);
+            return; 
+        }*/
 
         // Update Time
         startTime += Time.deltaTime;
@@ -180,9 +188,10 @@ public class GameManager : MonoBehaviour
         FirstCard = SecondCard = null;
     }
 
-    private IEnumerator CountDown(int _delay){
-            _timeAnimator.SetBool("IsDown", true);
-            yield return new WaitForSeconds(_delay);
-            IsGameActive = true;
-        }
+    private IEnumerator CountDown(int _delay)
+    {
+        _timeAnimator.SetBool("IsDown_b", true);
+        yield return new WaitForSeconds(_delay);
+        IsGameActive = true;
+    }
 }
