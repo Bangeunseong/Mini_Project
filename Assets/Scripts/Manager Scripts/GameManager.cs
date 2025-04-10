@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     private static GameManager m_instance;
     private AudioSource audioSource;
     private Animator _timeAnimator;
+
     public int CardCount;
     public CardController FirstCard, SecondCard;
     public bool IsHintActive { get; private set; } = false;
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _on; 
-                _hintPanel.SetActive(true);
+                _hintPanel.SetActive(true); 
             }
             else {
                 IsHintActive = !IsHintActive;
@@ -116,8 +117,8 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat(Category.ToString(), startTime); 
             }
             
-            _currentScore.GetComponent<Text>().text = $"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : {startTime.ToString("N2")}";
-            _highScore.GetComponent<Text>().text = $"ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ : {bestScore.ToString("N2")}";
+            _currentScore.GetComponent<Text>().text = $"ÇöÀç ±â·Ï : {startTime.ToString("N2")}";
+            _highScore.GetComponent<Text>().text = $"ÃÖ°í ±â·Ï : {bestScore.ToString("N2")}";
             
             // Activate EndPanel
             _endPanel.SetActive(true);
@@ -129,7 +130,7 @@ public class GameManager : MonoBehaviour
         /*if(startTime >= endTime) 
         { 
             IsGameActive = false;
-            _endText.GetComponent<Text>().text = "ï¿½ï¿½..";
+            _endText.GetComponent<Text>().text = "Âì..";
             _endText.SetActive(true);
             PlayerPrefs.SetFloat(Category.ToString(), startTime);
             return; 
@@ -152,7 +153,7 @@ public class GameManager : MonoBehaviour
         // If both cards are all face images or category images, close cards and reset memory.
         if ((FirstCard.Index >= 10 && SecondCard.Index >= 10) || (FirstCard.Index < 10 && SecondCard.Index < 10)) 
         { 
-            FirstCard.CloseCard(); SecondCard.CloseCard();
+            FirstCard.CloseCard(); SecondCard.CloseCard(); 
             FirstCard = SecondCard = null;
             return;
         }
