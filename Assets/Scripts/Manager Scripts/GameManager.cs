@@ -76,7 +76,6 @@ public class GameManager : MonoBehaviour
         if(AudioManager.Instance.IsAudioSourceChanged)
             StartCoroutine(AudioManager.Instance.FadeInSound((int)Category + 1, 0.5f));
 
-        StartCoroutine(AudioManager.Instance.FadeInSound((int)Category + 1, 0.5f));
         // Initialize Hint Button Action
         Button button = Helper.GetComponentHelper<Button>(_hintButton);
         button.onClick.AddListener(() => {
@@ -140,8 +139,8 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat(Category.ToString(), startTime); 
             }
             
-            _currentScore.GetComponent<Text>().text = $"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : {startTime.ToString("N2")}";
-            _highScore.GetComponent<Text>().text = $"ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ : {bestScore.ToString("N2")}";
+            _currentScore.GetComponent<Text>().text = $"ÇöÀç ±â·Ï : {startTime.ToString("N2")}";
+            _highScore.GetComponent<Text>().text = $"ÃÖ°í ±â·Ï : {bestScore.ToString("N2")}";
 
             // Activate EndPanel
             StartCoroutine(MovePanelUp(_endPanel, _endPanelAnimator, 0.1f));
@@ -153,7 +152,7 @@ public class GameManager : MonoBehaviour
         /*if(startTime >= endTime) 
         { 
             IsGameActive = false;
-            _endText.GetComponent<Text>().text = "ï¿½ï¿½..";
+            _endText.GetComponent<Text>().text = "Âì..";
             _endText.SetActive(true);
             PlayerPrefs.SetFloat(Category.ToString(), startTime);
             return; 
@@ -238,7 +237,7 @@ public class GameManager : MonoBehaviour
         while(delay >= 0)
         {
             // Change Text
-            if (delay == 0) { text.text = "ï¿½ï¿½ï¿½ï¿½!"; delay--; }
+            if (delay == 0) { text.text = "½ÃÀÛ!"; delay--; }
             else {
                 Debug.Log($"Countdown : {delay}");
                 text.text = delay--.ToString();

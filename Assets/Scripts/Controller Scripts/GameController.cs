@@ -5,9 +5,7 @@ public class GameController : MonoBehaviour
 {
     public void FromStartToCategory()
     {
-        StartCoroutine(AudioManager.Instance.FadeOutSound(0));
         SceneManager.LoadScene("Category");
-        StartCoroutine(AudioManager.Instance.FadeInSound(0, 0));
     }
 
     public void GoToStart()

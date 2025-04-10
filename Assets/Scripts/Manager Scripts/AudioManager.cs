@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour
 {
@@ -69,6 +67,7 @@ public class AudioManager : MonoBehaviour
             audioSource.volume = Mathf.Lerp(0f, 1f, time / duration);
             yield return null;
         }
+
         audioSource.volume = 1f;
     }
 }
