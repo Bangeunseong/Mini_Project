@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RetryController : MonoBehaviour
+public class GoCategoryController : MonoBehaviour
 {
-    public void RestartGame()
+    public void GoCategory()
     {
         SceneManager.LoadScene("Category");
     }

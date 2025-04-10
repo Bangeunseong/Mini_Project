@@ -21,13 +21,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> _hintObjects;
     [SerializeField] private Text _timeText;
     [SerializeField] private AudioClip _clip;
-    [SerializeField] private GameObject _endText;
+    [SerializeField] private GameObject _endPanel;
+    [SerializeField] private GameObject _timeLabel;
+    [SerializeField] private Text _endText;
     [SerializeField] private GameObject _hintButton;
     [SerializeField] private float endTime = 60f;
 
     private float startTime;
     private static GameManager m_instance;
     private AudioSource audioSource;
+    private Animator _timeAnimator;
     
     public int CardCount;
     public CardController FirstCard, SecondCard;
@@ -53,6 +56,8 @@ public class GameManager : MonoBehaviour
 
         // If this gameobject is not belong to previously assigned GameManager, destroy it to prevent double init.
         if (Instance != this) Destroy(gameObject);
+
+        _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -60,7 +65,6 @@ public class GameManager : MonoBehaviour
     {
         // Init. Attributes
         startTime = 0;
-        IsGameActive = true;
         audioSource = GetComponent<AudioSource>();
 
         // Initialize Hint Button Action
@@ -70,13 +74,13 @@ public class GameManager : MonoBehaviour
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _on; 
-                _hintPanel.SetActive(true); 
+                _hintPanel.SetActive(true);
             }
             else {
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
-                img.sprite = _on;
-                _hintPanel.SetActive(false); 
+                img.sprite = _off;
+                _hintPanel.SetActive(false);
             }
         });
 
@@ -87,6 +91,8 @@ public class GameManager : MonoBehaviour
             Image img = Helper.GetComponentHelper<Image>(_hintObjects[i]);
             img.sprite = memberTable.GetMemberInfoById(i / 2).PairOfImages[(int)Category].Values[i % 2].Image;
         }
+
+        StartCoroutine(CountDown(5));
     }
 
     // Update is called once per frame
@@ -97,22 +103,29 @@ public class GameManager : MonoBehaviour
         // If All cards destroyed, game ends.
         if(CardCount <= 0) 
         { 
-            IsGameActive = false; 
-            _endText.GetComponent<Text>().text = "¼º°ø!";
-            _endText.SetActive(true);
-            PlayerPrefs.SetFloat(Category.ToString(), startTime);
-            return; 
+            float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1.0f);
+            if (bestScore > startTime || bestScore < 0){
+                _endText.text = startTime.ToString("N2");
+                PlayerPrefs.SetFloat(Category.ToString(), startTime);
+            }
+            else {
+                _endText.text = bestScore.ToString("N2");
+            }
+            IsGameActive = false;
+            _endPanel.SetActive(true);
+
+            _timeAnimator.SetBool("IsDown", false);
+
+            return;
         }
         
         // If Time passes over endTime, game ends.
-        if(startTime >= endTime) 
-        { 
-            IsGameActive = false;
-            _endText.GetComponent<Text>().text = "Âì..";
-            _endText.SetActive(true);
-            PlayerPrefs.SetFloat(Category.ToString(), startTime);
-            return; 
-        }
+        // if(startTime >= endTime) 
+        // { 
+        //     IsGameActive = false;
+        //     _endPanel.SetActive(true);
+        //     return; 
+        // }
 
         // Update Time
         startTime += Time.deltaTime;
@@ -131,7 +144,7 @@ public class GameManager : MonoBehaviour
         // If both cards are all face images or category images, close cards and reset memory.
         if ((FirstCard.Index >= 10 && SecondCard.Index >= 10) || (FirstCard.Index < 10 && SecondCard.Index < 10)) 
         { 
-            FirstCard.CloseCard(); SecondCard.CloseCard(); 
+            FirstCard.CloseCard(); SecondCard.CloseCard();
             FirstCard = SecondCard = null;
             return;
         }
@@ -166,4 +179,10 @@ public class GameManager : MonoBehaviour
         // Reset Memory
         FirstCard = SecondCard = null;
     }
+
+    private IEnumerator CountDown(int _delay){
+            _timeAnimator.SetBool("IsDown", true);
+            yield return new WaitForSeconds(_delay);
+            IsGameActive = true;
+        }
 }
