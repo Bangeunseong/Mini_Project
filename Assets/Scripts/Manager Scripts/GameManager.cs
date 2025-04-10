@@ -120,8 +120,8 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat(Category.ToString(), startTime); 
             }
             
-            //_currentScore.GetComponent<Text>().text = $"���� ��� : {startTime.ToString("N2")}";
-           // _highScore.GetComponent<Text>().text = $"�ְ� ��� : {bestScore.ToString("N2")}";
+            //_currentScore.GetComponent<Text>().text = $"현재점수 : {startTime.ToString("N2")}";
+           // _highScore.GetComponent<Text>().text = $"최고점수 : {bestScore.ToString("N2")}";
             
             // Activate EndPanel
             _endPanel.SetActive(true);
@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
         /*if(startTime >= endTime) 
         { 
             IsGameActive = false;
-            _endText.GetComponent<Text>().text = "��..";
+            _endText.GetComponent<Text>().text = "쯧..";
             _endText.SetActive(true);
             PlayerPrefs.SetFloat(Category.ToString(), startTime);
             return; 
