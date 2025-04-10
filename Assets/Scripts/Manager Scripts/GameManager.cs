@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Runtime.CompilerServices;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour
     private static GameManager m_instance;
     private AudioSource audioSource;
     private Animator _timeAnimator;
+    private Animator _hintPanelAnimator;
+    private Animator _endPanelAnimator;
 
     public int CardCount;
     public CardController FirstCard, SecondCard;
@@ -60,6 +63,8 @@ public class GameManager : MonoBehaviour
 
         // Initialize Time Label Animator
         _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
+        _hintPanelAnimator = Helper.GetComponentHelper<Animator>(_hintPanel);
+        _endPanelAnimator = Helper.GetComponentHelper<Animator>(_endPanel);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -106,6 +111,18 @@ public class GameManager : MonoBehaviour
         // If All cards destroyed, game ends.
         if(CardCount <= 0) 
         { 
+            if (_hintPanel.activeInHierarchy)
+            { 
+                Image img = Helper.GetComponentHelper<Image>(_hintButton);
+                img.sprite = _off;
+
+                StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
+                
+            }
+
+            Button button = Helper.GetComponentHelper<Button>(_hintButton);
+            button.onClick.RemoveAllListeners();
+
             // Set Game as inactive, disable time text, and move up time label
             IsGameActive = false;
             _timeAnimator.SetBool("IsDown_b", false);
@@ -117,8 +134,8 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat(Category.ToString(), startTime); 
             }
             
-            _currentScore.GetComponent<Text>().text = $"ÇöÀç ±â·Ï : {startTime.ToString("N2")}";
-            _highScore.GetComponent<Text>().text = $"ÃÖ°í ±â·Ï : {bestScore.ToString("N2")}";
+            _currentScore.GetComponent<Text>().text = $"ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ : {startTime.ToString("N2")}";
+            _highScore.GetComponent<Text>().text = $"ï¿½Ö°ï¿½ ï¿½ï¿½ï¿½ : {bestScore.ToString("N2")}";
             
             // Activate EndPanel
             _endPanel.SetActive(true);
@@ -130,7 +147,7 @@ public class GameManager : MonoBehaviour
         /*if(startTime >= endTime) 
         { 
             IsGameActive = false;
-            _endText.GetComponent<Text>().text = "Âì..";
+            _endText.GetComponent<Text>().text = "ï¿½ï¿½..";
             _endText.SetActive(true);
             PlayerPrefs.SetFloat(Category.ToString(), startTime);
             return; 
@@ -194,5 +211,19 @@ public class GameManager : MonoBehaviour
         _timeAnimator.SetBool("IsDown_b", true);
         yield return new WaitForSeconds(_delay);
         IsGameActive = true;
+    }
+
+    private IEnumerator MovePanelUp(GameObject go, Animator animator, float _delay)
+    {
+        go.SetActive(true);
+        _hintPanelAnimator.SetBool("IsDown_b",true);
+        yield return new WaitForSeconds(_delay);
+    }
+
+    private IEnumerator MovePanelDown(GameObject go, Animator animator, float _delay)
+    {
+        animator.SetBool("IsUp_b", false);
+        _hintPanelAnimator.SetBool("IsDown_b",true);
+        yield return new WaitForSeconds(_delay);
     }
 }
