@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> _hintObjects;
     [SerializeField] private GameObject _timeLabel;
     [SerializeField] private Text _timeText;
+    [SerializeField] private GameObject _countDownText;
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endPanel;
     [SerializeField] private GameObject _currentScore;
@@ -32,6 +33,8 @@ public class GameManager : MonoBehaviour
     private static GameManager m_instance;
     private AudioSource audioSource;
     private Animator _timeAnimator;
+    private Animator _hintPanelAnimator;
+    private Animator _endPanelAnimator;
 
     public int CardCount;
     public CardController FirstCard, SecondCard;
@@ -60,6 +63,9 @@ public class GameManager : MonoBehaviour
 
         // Initialize Time Label Animator
         _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
+        _hintPanelAnimator = Helper.GetComponentHelper<Animator>(_hintPanel);
+        _endPanelAnimator = Helper.GetComponentHelper<Animator>(_endPanel);
+
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -69,20 +75,24 @@ public class GameManager : MonoBehaviour
         startTime = 0;
         audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
+        StartCoroutine(AudioManager.Instance.FadeInSound((int)Category + 1, 0.5f));
         // Initialize Hint Button Action
         Button button = Helper.GetComponentHelper<Button>(_hintButton);
         button.onClick.AddListener(() => {
+            if(!IsGameActive) { return; }
             if (!IsHintActive) { 
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _on; 
-                _hintPanel.SetActive(true); 
+                
+                StartCoroutine(MovePanelUp(_hintPanel, _hintPanelAnimator, 0.1f));
             }
             else {
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _off;
-                _hintPanel.SetActive(false); 
+
+                StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
             }
         });
 
@@ -95,7 +105,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Start Game After 5 seconds and move down time label
-        StartCoroutine(CountDown(5));
+        StartCoroutine(ShowCountDown(5));
     }
 
     // Update is called once per frame
@@ -106,6 +116,15 @@ public class GameManager : MonoBehaviour
         // If All cards destroyed, game ends.
         if(CardCount <= 0) 
         { 
+            if(_hintPanel.activeInHierarchy)
+            {
+                Image img = Helper.GetComponentHelper<Image>(_hintButton);
+                img.sprite = _off;
+
+                StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
+            }
+
+            Button button = Helper.GetComponentHelper<Button>(_hintButton);
             // Set Game as inactive, disable time text, and move up time label
             IsGameActive = false;
             _timeAnimator.SetBool("IsDown_b", false);
@@ -117,11 +136,12 @@ public class GameManager : MonoBehaviour
                 PlayerPrefs.SetFloat(Category.ToString(), startTime); 
             }
             
-            _currentScore.GetComponent<Text>().text = $"«ˆ¿Á ±‚∑œ : {startTime.ToString("N2")}";
-            _highScore.GetComponent<Text>().text = $"√÷∞Ì ±‚∑œ : {bestScore.ToString("N2")}";
+            _currentScore.GetComponent<Text>().text = $"ÌòÑÏû¨ Ï†êÏàò : {startTime.ToString("N2")}";
+            _highScore.GetComponent<Text>().text = $"ÏµúÍ≥† Ï†êÏàò : {bestScore.ToString("N2")}";
             
             // Activate EndPanel
             _endPanel.SetActive(true);
+            _endPanelAnimator.SetBool("IsUp",true);
             return; 
         }
         
@@ -130,7 +150,7 @@ public class GameManager : MonoBehaviour
         /*if(startTime >= endTime) 
         { 
             IsGameActive = false;
-            _endText.GetComponent<Text>().text = "¬Ï..";
+            _endText.GetComponent<Text>().text = "ÔøΩÔøΩ..";
             _endText.SetActive(true);
             PlayerPrefs.SetFloat(Category.ToString(), startTime);
             return; 
@@ -193,6 +213,42 @@ public class GameManager : MonoBehaviour
     {
         _timeAnimator.SetBool("IsDown_b", true);
         yield return new WaitForSeconds(_delay);
+        IsGameActive = true;
+    }
+        private IEnumerator MovePanelUp(GameObject go, Animator animator, float _delay)
+    {
+        go.SetActive(true);
+        yield return new WaitForSeconds(_delay);
+        animator.SetBool("IsUp", true);
+    }
+
+    private IEnumerator MovePanelDown(GameObject go, Animator animator, float _delay)
+    {
+        animator.SetBool("IsUp", false);
+        yield return new WaitForSeconds(_delay);
+        go.SetActive(false);   
+    }
+
+    private IEnumerator ShowCountDown(int _delay)
+    {
+        Text text = Helper.GetComponentHelper<Text>(_countDownText);
+        Animator animator = Helper.GetComponentHelper<Animator>(_countDownText);
+        int delay = _delay;
+
+        _timeAnimator.SetBool("IsDown_b",true);
+        yield return new WaitForSeconds(1);
+
+        while(delay >= 0){
+
+            if(delay == 0) {text.text = "ÏãúÏûë!"; delay--; }
+            else {text.text = delay--.ToString(); }
+
+
+            animator.SetTrigger("CountDown_Trigger");
+            yield return new WaitForSeconds(1.0f);
+            animator.SetBool("IsOn",true);
+        }
+        _countDownText.SetActive(false);
         IsGameActive = true;
     }
 }
