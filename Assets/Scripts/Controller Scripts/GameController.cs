@@ -3,10 +3,9 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-
-    public void FromeStartToCategory()
+    public void FromStartToCategory()
     {
-       SceneManager.LoadScene("Category");
+        SceneManager.LoadScene("Category");
     }
 
     public void GoToStart()

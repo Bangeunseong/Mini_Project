@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,7 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> _hintObjects;
     [SerializeField] private GameObject _timeLabel;
     [SerializeField] private Text _timeText;
-    [SerializeField] private GameObject _countdownText;
+    [SerializeField] private GameObject _countDownText;
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endPanel;
     [SerializeField] private GameObject _currentScore;
@@ -33,8 +31,8 @@ public class GameManager : MonoBehaviour
     private static GameManager m_instance;
     private AudioSource audioSource;
     private Animator _timeAnimator;
-    private Animator hintpanelAnimator;
-    private Animator endPanelAnimator;
+    private Animator _hintPanelAnimator;
+    private Animator _endPanelAnimator;
 
     public int CardCount;
     public CardController FirstCard, SecondCard;
@@ -61,10 +59,10 @@ public class GameManager : MonoBehaviour
         // If this gameobject is not belong to previously assigned GameManager, destroy it to prevent double init.
         if (Instance != this) Destroy(gameObject);
 
+        // Initialize Time Label Animator, Hint Panel Animator
         _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
-        hintpanelAnimator = Helper.GetComponentHelper<Animator>(_hintPanel);
-        endPanelAnimator= Helper.GetComponentHelper<Animator>(_endPanel);
-
+        _hintPanelAnimator = Helper.GetComponentHelper<Animator>(_hintPanel);
+        _endPanelAnimator = Helper.GetComponentHelper<Animator>(_endPanel);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -73,31 +71,31 @@ public class GameManager : MonoBehaviour
         // Init. Attributes
         startTime = 0;
         audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
-        if(AudioManager.Instance.IsaudioSourceChanged)
-        StartCoroutine(AudioManager.Instance.FadeInSound((int)Category+1, 0.5f));
+        
+        // Fade In Audio Sound
+        if(AudioManager.Instance.IsAudioSourceChanged)
+            StartCoroutine(AudioManager.Instance.FadeInSound((int)Category + 1, 0.5f));
 
         // Initialize Hint Button Action
         Button button = Helper.GetComponentHelper<Button>(_hintButton);
         button.onClick.AddListener(() => {
-            if (!IsGameActive)
-            {
-                return;
-            }
+            if(!IsGameActive) { return; }
+
             if (!IsHintActive) { 
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _on;
 
-                // 힌트 패널 올림/활성화
-                StartCoroutine(MovePanelUp(_hintPanel, hintpanelAnimator, 0.05f));
+                // Activate Hint Panel and Move Up
+                StartCoroutine(MovePanelUp(_hintPanel, _hintPanelAnimator, 0.05f));
             }
             else {
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _off;
 
-                // 힌트 패널 내림/비활성화
-                StartCoroutine(MovePanelDown(_hintPanel,hintpanelAnimator,0.7f));
+                // Move Hint Panel Down and Deactivate
+                StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
             }
         });
 
@@ -109,7 +107,8 @@ public class GameManager : MonoBehaviour
             img.sprite = memberTable.GetMemberInfoById(i / 2).PairOfImages[(int)Category].Values[i % 2].Image;
         }
 
-        StartCoroutine(showCountDown(5));
+        // Start Game After 5 seconds and move down time label
+        StartCoroutine(ShowCountDown(5));
     }
 
     // Update is called once per frame
@@ -119,33 +118,32 @@ public class GameManager : MonoBehaviour
 
         // If All cards destroyed, game ends.
         if(CardCount <= 0) 
-        { 
-           if(_hintPanel.activeInHierarchy)         //힌트 패널이 작동을 하고 있으면
-            {
+        {
+            // If HintPanel is turned on even if the game ends, close the hint panel
+            if (_hintPanel.activeInHierarchy)
+            { 
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _off;
-                StartCoroutine(MovePanelDown(_hintPanel, hintpanelAnimator, 0.7f));
+                
+                StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
             }
-            Button button = Helper.GetComponentHelper<Button>(_hintButton);
-
-
-            // Set Game as inactive, disable time text
+            
+            // Set Game as inactive, disable time text, and move up time label
             IsGameActive = false;
-            _timeAnimator.SetBool("IsDown", false);
-
+            _timeAnimator.SetBool("IsDown_b", false);
+            
             // Evaluate which score is best, then refresh Text UI
             float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1);
-            if (bestScore > startTime || bestScore < 0)
-            {
+            if (bestScore > startTime || bestScore < 0) { 
                 bestScore = startTime;
-                PlayerPrefs.SetFloat(Category.ToString(), startTime);
+                PlayerPrefs.SetFloat(Category.ToString(), startTime); 
             }
-
+            
             _currentScore.GetComponent<Text>().text = $"현재 기록 : {startTime.ToString("N2")}";
             _highScore.GetComponent<Text>().text = $"최고 기록 : {bestScore.ToString("N2")}";
+
             // Activate EndPanel
-            _endPanel.SetActive(true);
-            endPanelAnimator.SetBool("isUp", true);
+            StartCoroutine(MovePanelUp(_endPanel, _endPanelAnimator, 0.1f));
             return; 
         }
         
@@ -212,56 +210,46 @@ public class GameManager : MonoBehaviour
         // Reset Memory
         FirstCard = SecondCard = null;
     }
-    private IEnumerator CountDown(int _delay)
-    {
-        _timeAnimator.SetBool("IsDown",true);
-       yield return new WaitForSeconds(_delay);
-        IsGameActive = true;
-    }
+
     private IEnumerator MovePanelUp(GameObject go, Animator animator, float _delay)
     {
         go.SetActive(true);
         yield return new WaitForSeconds(_delay);
-        animator.SetBool("isUp", true);
+        animator.SetBool("IsUp_b", true);
     }
-
 
     private IEnumerator MovePanelDown(GameObject go, Animator animator, float _delay)
     {
-        animator.SetBool("isUp", false);
+        animator.SetBool("IsUp_b", false);
         yield return new WaitForSeconds(_delay);
         go.SetActive(false);
     }
 
-    private IEnumerator showCountDown(int _delay)
+    private IEnumerator ShowCountDown(int _delay)
     {
-        Text text = Helper.GetComponentHelper<Text>(_countdownText);
-        Animator animator = Helper.GetComponentHelper<Animator>(_countdownText);
+        Text text = Helper.GetComponentHelper<Text>(_countDownText);
+        Animator animator = Helper.GetComponentHelper<Animator>(_countDownText);
         int delay = _delay;
 
-        _timeAnimator.SetBool("IsDown", true);
+        _timeAnimator.SetBool("IsDown_b", true);
         yield return new WaitForSeconds(1.5f);
-
-        while(delay >= 0 )
+        
+        while(delay >= 0)
         {
-            if (delay == 0)
-            {
-                text.text = "시작";
-                delay--;
-            }
-            else
-            {
+            // Change Text
+            if (delay == 0) { text.text = "시작!"; delay--; }
+            else {
+                Debug.Log($"Countdown : {delay}");
                 text.text = delay--.ToString();
             }
 
+            // Reset and Set Trigger to play animation
             animator.ResetTrigger("Count_trig");
             animator.SetTrigger("Count_trig");
-
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(1.1f);
         }
 
-        _countdownText.SetActive(false);
+        _countDownText.SetActive(false);
         IsGameActive = true;
     }
 }
-
