@@ -72,6 +72,8 @@ public class GameManager : MonoBehaviour
         _startTime = 0f;
         _audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
+        StartCoroutine(AudioManager.Instance.FadeInSound((int)Category + 1 , 0f));
+
         Button hintButton = Helper.GetComponentHelper<Button>(_hintButton);
         Image hintImage = Helper.GetComponentHelper<Image>(_hintButton);
 

@@ -622,7 +622,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1015153077}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: GoToCategory
+        m_MethodName: FromStartToCategory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -806,7 +806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfb93c520133c842a1481937ea767b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 0e02211433e357445a2a100d91e3637c, type: 3}
+  _mainBGMs:
+  - {fileID: 8300000, guid: f4cabbf07ab9f2a41af2e3f5c572ab59, type: 3}
+  - {fileID: 8300000, guid: bcd68e64d24a2a44c975e430d713c7d2, type: 3}
+  - {fileID: 8300000, guid: 3106e91c0d1a6ff4a9c8e54fbb6ab04b, type: 3}
+  - {fileID: 8300000, guid: 2ac42bf47989fb741a58c9afba7141ad, type: 3}
+  - {fileID: 8300000, guid: a4c87786574706e4dab724a3ad5459be, type: 3}
 --- !u!82 &1711782992
 AudioSource:
   m_ObjectHideFlags: 0
@@ -817,8 +822,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f4cabbf07ab9f2a41af2e3f5c572ab59, type: 3}
+  m_Resource: {fileID: 8300000, guid: f4cabbf07ab9f2a41af2e3f5c572ab59, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
