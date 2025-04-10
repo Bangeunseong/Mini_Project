@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Net;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +8,7 @@ public enum Category
     Food,
     Game,
     Hobby,
-    Movie,
+    Movie
 }
 
 public class GameManager : MonoBehaviour
@@ -19,18 +17,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Sprite _on;
     [SerializeField] private GameObject _hintPanel;
     [SerializeField] private List<GameObject> _hintObjects;
+    [SerializeField] private GameObject _timeLabel;
     [SerializeField] private Text _timeText;
+    [SerializeField] private GameObject _contdownText;
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endPanel;
     [SerializeField] private GameObject _currentScore;
     [SerializeField] private GameObject _highScore;
     [SerializeField] private GameObject _hintButton;
-    // [SerializeField] private float endTime = 60f;
 
-    private float startTime;
-    private static GameManager m_instance;
-    private AudioSource audioSource;
-    
+    private float _startTime;
+    private static GameManager _instance;
+    private AudioSource _audioSource;
+    private Animator _timeAnimator;
+    private Animator _hintPanelAnimator;
+    private Animator _endPanelAnimator;
+
     public int CardCount;
     public CardController FirstCard, SecondCard;
     public bool IsHintActive { get; private set; } = false;
@@ -39,146 +41,188 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance
     {
-        get { 
-            if(m_instance == null) 
-                m_instance = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-            return m_instance;
+        get
+        {
+            if (_instance == null)
+                _instance = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+            return _instance;
         }
     }
 
-    // Awake is called once before Start Method
     void Awake()
     {
-        // Initialize Category Attribute
-        if (!PlayerPrefs.HasKey("Category")) Category = Category.Food;
-        else Category = (Category)PlayerPrefs.GetInt("Category");
+        if (!PlayerPrefs.HasKey("Category")) 
+            Category = Category.Food;
+        else 
+            Category = (Category)PlayerPrefs.GetInt("Category");
 
-        // If this gameobject is not belong to previously assigned GameManager, destroy it to prevent double init.
-        if (Instance != this) Destroy(gameObject);
+        if (Instance != this) 
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        _timeAnimator = Helper.GetComponentHelper<Animator>(_timeLabel);
+        _hintPanelAnimator = Helper.GetComponentHelper<Animator>(_hintPanel);
+        _endPanelAnimator = Helper.GetComponentHelper<Animator>(_endPanel);
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // Init. Attributes
-        startTime = 0;
-        IsGameActive = true;
-        audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
+        _startTime = 0f;
+        _audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
-        // Initialize Hint Button Action
-        Button button = Helper.GetComponentHelper<Button>(_hintButton);
-        button.onClick.AddListener(() => {
-            if (!IsHintActive) { 
-                IsHintActive = !IsHintActive;
-                Image img = Helper.GetComponentHelper<Image>(_hintButton);
-                img.sprite = _on; 
-                _hintPanel.SetActive(true); 
-            }
-            else {
-                IsHintActive = !IsHintActive;
-                Image img = Helper.GetComponentHelper<Image>(_hintButton);
-                img.sprite = _off;
-                _hintPanel.SetActive(false); 
-            }
+        Button hintButton = Helper.GetComponentHelper<Button>(_hintButton);
+        Image hintImage = Helper.GetComponentHelper<Image>(_hintButton);
+
+        hintButton.onClick.AddListener(() =>
+        {
+            IsHintActive = !IsHintActive;
+            hintImage.sprite = IsHintActive ? _on : _off;
+
+            if (IsHintActive)
+                StartCoroutine(MovePanelUp(_hintPanel, _hintPanelAnimator, 0.05f));
+            else
+                StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
         });
 
         MemberTable memberTable = TableManager.Instance.GetTable<MemberTable>();
-        // Initialize Hint Images
-        for(int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
         {
             Image img = Helper.GetComponentHelper<Image>(_hintObjects[i]);
             img.sprite = memberTable.GetMemberInfoById(i / 2).PairOfImages[(int)Category].Values[i % 2].Image;
         }
+
+        StartCoroutine(ShowCountDown(5));
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(!IsGameActive) { return; }
+        if (!IsGameActive) return;
 
-        // If All cards destroyed, game ends.
-        if(CardCount <= 0) 
-        { 
-            // Set Game as inactive, disable time text
-            IsGameActive = false; 
-            _timeText.enabled = false;
-            
-            // Evaluate which score is best, then refresh Text UI
-            float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1);
-            if (bestScore > startTime || bestScore < 0) { 
-                bestScore = startTime;
-                PlayerPrefs.SetFloat(Category.ToString(), startTime); 
-            }
-            
-            _currentScore.GetComponent<Text>().text = $"«ˆ¿Á ±‚∑œ : {startTime.ToString("N2")}";
-            _highScore.GetComponent<Text>().text = $"√÷∞Ì ±‚∑œ : {bestScore.ToString("N2")}";
-            
-            // Activate EndPanel
-            _endPanel.SetActive(true);
-            return; 
+        if (CardCount <= 0)
+        {
+            EndGame();
+            return;
         }
-        
-        // Deprecated
-        // If Time passes over endTime, game ends.
-        /*if(startTime >= endTime) 
-        { 
-            IsGameActive = false;
-            _endText.GetComponent<Text>().text = "¬Ï..";
-            _endText.SetActive(true);
-            PlayerPrefs.SetFloat(Category.ToString(), startTime);
-            return; 
-        }*/
 
-        // Update Time
-        startTime += Time.deltaTime;
-
-        // Update Time UI
-        UpdateTime();
+        _startTime += Time.deltaTime;
+        UpdateTimeUI();
     }
 
-    void UpdateTime()
+    private void UpdateTimeUI()
     {
-        _timeText.text = startTime.ToString("N2");
+        _timeText.text = _startTime.ToString("N2");
+    }
+
+    private void EndGame()
+    {
+        if (_hintPanel.activeInHierarchy)
+        {
+            Image hintImage = Helper.GetComponentHelper<Image>(_hintButton);
+            hintImage.sprite = _off;
+            StartCoroutine(MovePanelDown(_hintPanel, _hintPanelAnimator, 0.7f));
+        }
+
+        Helper.GetComponentHelper<Button>(_hintButton).onClick.RemoveAllListeners();
+
+        IsGameActive = false;
+        _timeAnimator.SetBool("IsDown", false);
+
+        float bestScore = PlayerPrefs.GetFloat(Category.ToString(), -1);
+        if (bestScore > _startTime || bestScore < 0)
+        {
+            bestScore = _startTime;
+            PlayerPrefs.SetFloat(Category.ToString(), _startTime);
+        }
+
+        _currentScore.GetComponent<Text>().text = $"ÌòÑÏû¨ Í∏∞Î°ù : {_startTime.ToString("N2")}";
+        _highScore.GetComponent<Text>().text = $"ÏµúÍ≥† Í∏∞Î°ù : {bestScore.ToString("N2")}";
+        
+        _endPanel.SetActive(true);
+        _endPanelAnimator.SetBool("isUp", true);
     }
 
     public void MatchCards()
     {
-        // If both cards are all face images or category images, close cards and reset memory.
-        if ((FirstCard.Index >= 10 && SecondCard.Index >= 10) || (FirstCard.Index < 10 && SecondCard.Index < 10)) 
-        { 
-            FirstCard.CloseCard(); SecondCard.CloseCard(); 
-            FirstCard = SecondCard = null;
+        if (FirstCard == null || SecondCard == null)
             return;
-        }
 
-        // When FirstCard is not face images,
-        // Compare Second Card (Id -> Member Id) and First Card (Parent Id -> Connected Member Id)
-        if(FirstCard.Id < 0)
+        bool isFirstFace = FirstCard.Index >= 10;
+        bool isSecondFace = SecondCard.Index >= 10;
+
+        if ((isFirstFace && isSecondFace) || (!isFirstFace && !isSecondFace))
         {
-            if(SecondCard.Id == FirstCard.ParentId)
-            {
-                audioSource.PlayOneShot(_clip);
-                FirstCard.DestroyCard(); SecondCard.DestroyCard();
-                CardCount -= 2;
-            }
-            else FirstCard.CloseCard(); SecondCard.CloseCard();
+            FirstCard.CloseCard();
+            SecondCard.CloseCard();
         }
-        // When SecondCard is not face images,
-        // Compare First Card (Parent Id -> Paired Member Id) and Second Card (Id -> Member Id)
         else
         {
-            if (FirstCard.Id == SecondCard.ParentId)
+            bool isMatch = FirstCard.Id < 0 
+                ? (SecondCard.Id == FirstCard.ParentId) 
+                : (FirstCard.Id == SecondCard.ParentId);
+
+            if (isMatch)
             {
-                // Play Audio and Destroy Cards
-                audioSource.PlayOneShot(_clip);
-                FirstCard.DestroyCard(); SecondCard.DestroyCard();
+                _audioSource.PlayOneShot(_clip);
+                FirstCard.DestroyCard();
+                SecondCard.DestroyCard();
                 CardCount -= 2;
             }
-            // Close Cards
-            else FirstCard.CloseCard(); SecondCard.CloseCard();
+            else
+            {
+                FirstCard.CloseCard();
+                SecondCard.CloseCard();
+            }
         }
 
-        // Reset Memory
-        FirstCard = SecondCard = null;
+        FirstCard = null;
+        SecondCard = null;
+    }
+
+    private IEnumerator CountDown(int delay)
+    {
+        _timeAnimator.SetBool("IsDown", true);
+        yield return new WaitForSeconds(delay);
+        IsGameActive = true;
+    }
+
+    private IEnumerator MovePanelUp(GameObject go, Animator animator, float delay)
+    {
+        go.SetActive(true);
+        yield return new WaitForSeconds(delay);
+        animator.SetBool("isUp", true);
+    }
+
+    private IEnumerator MovePanelDown(GameObject go, Animator animator, float delay)
+    {
+        animator.SetBool("isUp", false);
+        yield return new WaitForSeconds(delay);
+        go.SetActive(false);
+    }
+    private IEnumerator ShowCountDown(int _delay)
+    {
+        Text text = Helper.GetComponentHelper<Text>(_contdownText);
+        Animator animator = Helper.GetComponentHelper<Animator>(_contdownText);
+        int delay = _delay;
+
+        _timeAnimator.SetBool("IsDown", true);
+        yield return new WaitForSeconds(1); //fÎ•º Î∂ôÏó¨ÎèÑ ÎêòÏßÄ ÏïäÎäî Ïù¥Ïú† Ï°∞ÏÇ¨
+
+        while(delay >= 0)
+        {
+            //change text
+            if(delay == 0) { text.text = "ÏãúÏûë!"; delay--;}
+            
+            else{text.text = delay--.ToString();}
+
+            animator.SetTrigger("Count_trig");
+
+            yield return new WaitForSeconds(1);
+        }
+
+       
+        _contdownText.SetActive(false);
+        IsGameActive = true;
     }
 }
