@@ -622,7 +622,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1015153077}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: GoToCategory
+        m_MethodName: FromStartToCategory
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -806,7 +806,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfb93c520133c842a1481937ea767b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Clip: {fileID: 8300000, guid: 0e02211433e357445a2a100d91e3637c, type: 3}
+  _mainBGMs:
+  - {fileID: 8300000, guid: b13f575ee51a2dc46a149072e691e068, type: 3}
+  - {fileID: 8300000, guid: b6b398573be43594f9593039cb389627, type: 3}
+  - {fileID: 8300000, guid: 82dc3275fbeadc44886ea1b1c362d9d2, type: 3}
+  - {fileID: 8300000, guid: 3505b1725af541f4ab9259ed8a641b0d, type: 3}
+  - {fileID: 8300000, guid: 6e0b004467ec5b44c90ea02fc181e195, type: 3}
 --- !u!82 &1711782992
 AudioSource:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class CardController : MonoBehaviour
     public GameObject Back;
     public GameObject Hint;
     public AudioClip Clip;
+
     public int Id { get; private set; }
     public int ParentId { get; private set; }
     public int Index { get; private set; }

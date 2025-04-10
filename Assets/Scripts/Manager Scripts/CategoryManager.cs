@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -30,7 +31,7 @@ public class CategoryManager : MonoBehaviour
         {
             Button btn = Helper.GetComponentHelper<Button>(Buttons[(int)category]);
             Text record = Helper.GetComponentHelper<Text>(Records[(int)category]);
-            btn.onClick.AddListener(() => StartMainGame((int)category));
+            btn.onClick.AddListener(() => StartCoroutine(FadeOutSound_BeforeGameStart(category, 0.4f)));
             record.text = PlayerPrefs.GetFloat(category.ToString(), 0f).ToString("N2");
         }   
     }
@@ -39,5 +40,12 @@ public class CategoryManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("Category", category);
         SceneManager.LoadScene("Main");
+    }
+
+    private IEnumerator FadeOutSound_BeforeGameStart(Category category, float delay)
+    {
+        StartCoroutine(AudioManager.Instance.FadeOutSound(delay));
+        yield return new WaitForSeconds(delay + 0.5f);
+        StartMainGame((int)category);
     }
 }
