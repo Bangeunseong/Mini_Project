@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<GameObject> _hintObjects;
     [SerializeField] private GameObject _timeLabel;
     [SerializeField] private Text _timeText;
+    [SerializeField] private GameObject _countDownText;
     [SerializeField] private AudioClip _clip;
     [SerializeField] private GameObject _endPanel;
     [SerializeField] private GameObject _currentScore;
@@ -69,13 +70,15 @@ public class GameManager : MonoBehaviour
         startTime = 0;
         audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
+        StartCoroutine(AudioManager.Instance.FadeInSound(0);)
+
         // Initialize Hint Button Action
         Button button = Helper.GetComponentHelper<Button>(_hintButton);
         button.onClick.AddListener(() => {
             if (!IsHintActive) { 
                 IsHintActive = !IsHintActive;
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
-                img.sprite = _on; 
+                img.sprite = _off; 
                 _hintPanel.SetActive(true); 
             }
             else {
@@ -193,6 +196,30 @@ public class GameManager : MonoBehaviour
     {
         _timeAnimator.SetBool("IsDown_b", true);
         yield return new WaitForSeconds(_delay);
+        IsGameActive = true;
+    }
+
+    private IEnumerator ShowCountdown(int _delay)
+    {
+            Text text = Helper.GetComponentHelper<Text>(_countDownText);
+            Animator animator = Helper.GetComponentHelper<Animator>(_countDownText);
+            int delay = _delay;
+
+    
+        _timeAnimator.SetBool("IsDown_b", true);
+        yield return new WaitForSeconds(1.5f);
+
+        while(delay >= 0)
+        {
+
+            text.text = _delay.ToString();
+            animator.SetTrigger("Count_trig");
+
+            yield return new WaitForSeconds(1);
+
+        }
+
+        _countDownText.SetActive(false);
         IsGameActive = true;
     }
 }
