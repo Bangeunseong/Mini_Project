@@ -475,11 +475,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11fcda53911e70e4abe8b4a645f0b901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startTime: 0
+  audioSource: {fileID: 0}
   firstCard: {fileID: 0}
   secondCard: {fileID: 0}
   timeText: {fileID: 405137268}
   clip: {fileID: 8300000, guid: 2aa95826d3b3751438869d5e18362b40, type: 3}
   endText: {fileID: 1229722796}
+  <isGameActive>k__BackingField: 0
+  <wave>k__BackingField: 0
   cardCount: 0
 --- !u!4 &918215626
 Transform:
