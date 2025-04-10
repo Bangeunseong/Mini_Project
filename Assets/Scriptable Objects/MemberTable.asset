@@ -1,0 +1,205 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3a228e3c4b7b434f87579e63360ff9c, type: 3}
+  m_Name: MemberTable
+  m_EditorClassIdentifier: 
+  _members:
+  - Id: 0
+    Name: Bang
+    Selfies:
+    - {fileID: 21300000, guid: efc7d31cec38578499aa8907bc0b47ea, type: 3}
+    - {fileID: 21300000, guid: 0bc0b14af74d3fc4699473967476cf7b, type: 3}
+    PairOfImages:
+    - Key: 0
+      Values:
+      - ParentId: 0
+        Description: "\uC218\uBC15"
+        Image: {fileID: 21300000, guid: 6f3facabc1c69cd438267973feb518db, type: 3}
+      - ParentId: 0
+        Description: "\uC0E4\uC778\uBA38\uC2A4\uCF13"
+        Image: {fileID: 21300000, guid: b196a8f67f47e154b9b5032fe3d49576, type: 3}
+    - Key: 1
+      Values:
+      - ParentId: 0
+        Description: "\uD23C \uB808\uC774\uB354"
+        Image: {fileID: 21300000, guid: 62e1a9f96067b1e4195d8b66f2453c4d, type: 3}
+      - ParentId: 0
+        Description: "\uB808\uB4DC \uB370\uB4DC \uB9AC\uB380\uC158"
+        Image: {fileID: 21300000, guid: 7ccedc6b30c710e448f5ca76214693c5, type: 3}
+    - Key: 2
+      Values:
+      - ParentId: 0
+        Description: "\uC6B4\uB3D9"
+        Image: {fileID: 21300000, guid: 0b8d3b456e16369488fbcc207a47e66b, type: 3}
+      - ParentId: 0
+        Description: Crafting
+        Image: {fileID: 21300000, guid: 0baebbaaa82ebf444a3073bff887f1e8, type: 3}
+    - Key: 3
+      Values:
+      - ParentId: 0
+        Description: "\uD5E4\uC774\uD2B8\uD4808"
+        Image: {fileID: 21300000, guid: f0037203bef8d254fb566b1027fb7ef9, type: 3}
+      - ParentId: 0
+        Description: "\uC7A5\uACE0:\uBD84\uB178\uC758\uCD94\uACA9\uC790"
+        Image: {fileID: 21300000, guid: abf7a08aebb71f2428eceb9c06c29aee, type: 3}
+  - Id: 1
+    Name: Yang
+    Selfies:
+    - {fileID: 21300000, guid: 65caae93e169d4e4ba6f066326b13db2, type: 3}
+    - {fileID: 21300000, guid: 4e71222520af24648a5f592ae9e339b4, type: 3}
+    PairOfImages:
+    - Key: 0
+      Values:
+      - ParentId: 1
+        Description: "\uC0BC\uACB9\uC0B4"
+        Image: {fileID: 21300000, guid: 784f30d4654655541832b379d9b8a880, type: 3}
+      - ParentId: 1
+        Description: "\uD53C\uC790"
+        Image: {fileID: 21300000, guid: 1b908757459fde0459d0f1c82a3edb29, type: 3}
+    - Key: 1
+      Values:
+      - ParentId: 1
+        Description: "\uACE0\uC2A4\uD2B8\uC624\uBE0C\uC4F0\uC2DC\uB9C8"
+        Image: {fileID: 21300000, guid: 2ec1e4007cc325449bb0526771cceb17, type: 3}
+      - ParentId: 1
+        Description: "\uAC13\uC624\uBE0C\uC6CC"
+        Image: {fileID: 21300000, guid: f7849d1e4f8fecf4eb41f0132fcc97bc, type: 3}
+    - Key: 2
+      Values:
+      - ParentId: 1
+        Description: "\uB274\uC2A4\uC2DC\uCCAD"
+        Image: {fileID: 21300000, guid: fa11e7a6cc6562241ad64e776c7c9390, type: 3}
+      - ParentId: 1
+        Description: "\uB178\uB798\uBD80\uB974\uAE30"
+        Image: {fileID: 21300000, guid: fbb2247aaf921d343b9257aeb751d873, type: 3}
+    - Key: 3
+      Values:
+      - ParentId: 1
+        Description: "\uC0AC\uB3C4"
+        Image: {fileID: 21300000, guid: f96ca29c64ce397469cb1b07d1209d73, type: 3}
+      - ParentId: 1
+        Description: "\uC2E0\uC138\uACC4"
+        Image: {fileID: 21300000, guid: a4bed8a41f3d47f4a95fa9f2a32afd24, type: 3}
+  - Id: 2
+    Name: Jo
+    Selfies:
+    - {fileID: 21300000, guid: 1b51013a4ea1dd147a9ac4cad5496d75, type: 3}
+    - {fileID: 21300000, guid: 5f1cba326a05afd4a81ae5709029d3fd, type: 3}
+    PairOfImages:
+    - Key: 0
+      Values:
+      - ParentId: 2
+        Description: "\uB77C\uBA74"
+        Image: {fileID: 21300000, guid: b505a8379f667ec418d4a1564d935a86, type: 3}
+      - ParentId: 2
+        Description: "\uC0AC\uACFC"
+        Image: {fileID: 21300000, guid: 878b208c0658a0349ac56b67b79692fe, type: 3}
+    - Key: 1
+      Values:
+      - ParentId: 2
+        Description: "\uB514\uC5B4 \uB9C8\uC774 \uC5D0\uB514\uD130"
+        Image: {fileID: 21300000, guid: 1cd392e67dae28a4c8b711c5d0560c9a, type: 3}
+      - ParentId: 2
+        Description: "\uBD95\uAD34: \uC2A4\uD0C0\uB808\uC77C"
+        Image: {fileID: 21300000, guid: 222f7154b88e77742bb3ba095fca5198, type: 3}
+    - Key: 2
+      Values:
+      - ParentId: 2
+        Description: "\uAE00\uC4F0\uAE30"
+        Image: {fileID: 21300000, guid: bc7a91bd109e3634596a61246a089ef4, type: 3}
+      - ParentId: 2
+        Description: "\uB3C5\uC11C"
+        Image: {fileID: 21300000, guid: 664b42362516aad438e3c7675365815f, type: 3}
+    - Key: 3
+      Values:
+      - ParentId: 2
+        Description: "\uC2A4\uC988\uBA54\uC758 \uBB38\uB2E8\uC18D"
+        Image: {fileID: 21300000, guid: e34b8ca2bfa3dd34b8b65ee6aa572f7b, type: 3}
+      - ParentId: 2
+        Description: "\uC778\uC149\uC158"
+        Image: {fileID: 21300000, guid: 5fa520d5285a4334cbf0af7424d89b4e, type: 3}
+  - Id: 3
+    Name: Park
+    Selfies:
+    - {fileID: 21300000, guid: 372e5b0ff2fd9a14dbaf568bfb465f76, type: 3}
+    - {fileID: 21300000, guid: da0806ec754e0da44beffabcee98d87e, type: 3}
+    PairOfImages:
+    - Key: 0
+      Values:
+      - ParentId: 3
+        Description: "\uB2ED\uBCF6\uC74C"
+        Image: {fileID: 21300000, guid: 58fb6e4b3ba0f374e8fb04b1de790389, type: 3}
+      - ParentId: 3
+        Description: "\uCE58\uD0A8"
+        Image: {fileID: 21300000, guid: 8f3ab00339fe6a74d82ddc236c089f17, type: 3}
+    - Key: 1
+      Values:
+      - ParentId: 3
+        Description: "\uB9C8\uC778\uD06C\uB798\uD504\uD2B8"
+        Image: {fileID: 21300000, guid: 807d8a1f5e2e471419d46d0a87052b30, type: 3}
+      - ParentId: 3
+        Description: "\uC880\uBCF4\uC774\uB4DC"
+        Image: {fileID: 21300000, guid: 9b4a814d72cff364b93a41f814102adf, type: 3}
+    - Key: 2
+      Values:
+      - ParentId: 3
+        Description: "\uC74C\uC545\uAC10\uC0C1"
+        Image: {fileID: 21300000, guid: 167646e9c67e00c4aaa10d8573da14a9, type: 3}
+      - ParentId: 3
+        Description: "\uB7AB\uD480\uB2E4\uC6B4"
+        Image: {fileID: 21300000, guid: a2188d9e8889fed49921b26912ed76a2, type: 3}
+    - Key: 3
+      Values:
+      - ParentId: 3
+        Description: "Marvel: \uC5B4\uBCA4\uC838\uC2A4"
+        Image: {fileID: 21300000, guid: 94bb24973719ba64ca09424ebcc11270, type: 3}
+      - ParentId: 3
+        Description: "\uCF54\uB810\uB77C\uC778"
+        Image: {fileID: 21300000, guid: f03960a0a62e1c841a251804948ad962, type: 3}
+  - Id: 4
+    Name: Son
+    Selfies:
+    - {fileID: 21300000, guid: 83e09342a10f3924b9507d0e122712d1, type: 3}
+    - {fileID: 21300000, guid: 6c2598a00c402f6459aa9f19ea9b6db1, type: 3}
+    PairOfImages:
+    - Key: 0
+      Values:
+      - ParentId: 4
+        Description: "\uCD08\uBC25"
+        Image: {fileID: 21300000, guid: f4dcfaaa496d669409cc41f09bdb8d63, type: 3}
+      - ParentId: 4
+        Description: "\uAC04\uC7A5\uAC8C\uC7A5"
+        Image: {fileID: 21300000, guid: 19bb6b5cb7939a14fa19d531c10d13de, type: 3}
+    - Key: 1
+      Values:
+      - ParentId: 4
+        Description: "\uC138\uD0A4\uB85C"
+        Image: {fileID: 21300000, guid: 103c4e6f041873c479a357b9bf7dd58c, type: 3}
+      - ParentId: 4
+        Description: "\uC824\uB2E4\uC758 \uC804\uC124"
+        Image: {fileID: 21300000, guid: b8db9f7d68bcb2b469fbfaf1801fd266, type: 3}
+    - Key: 2
+      Values:
+      - ParentId: 4
+        Description: "\uC57C\uAD6C"
+        Image: {fileID: 21300000, guid: b4208789655b36741b2f450f2e94cee1, type: 3}
+      - ParentId: 4
+        Description: "\uC694\uB9AC"
+        Image: {fileID: 21300000, guid: 1579c2243d35d0f449326b77d50c1686, type: 3}
+    - Key: 3
+      Values:
+      - ParentId: 4
+        Description: "\uC6B0\uB9C8\uBB34\uC2A4\uBA54"
+        Image: {fileID: 21300000, guid: 995a4eb78da968744b53dbb9c9013c7d, type: 3}
+      - ParentId: 4
+        Description: "\uD14C\uB137"
+        Image: {fileID: 21300000, guid: b5ee6ad52d6b3fe48a1bdd53a7f1d12a, type: 3}
