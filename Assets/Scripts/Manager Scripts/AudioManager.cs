@@ -1,4 +1,5 @@
-using UnityEditor;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,14 +9,15 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private List<AudioClip> _mainBGMs;
     private AudioSource audioSource;
 
-    public bool IsAudioSourceChanged {get; set;} = false;
+    public bool IsAudioSourceChanged { get; set; } = false;
+    
     private static AudioManager m_instance;
-
     public static AudioManager Instance
     {
         get
         {
-            if(m_instance == null) m_instance = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
+            if(m_instance == null) 
+                m_instance = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
             return m_instance;
         }
     }
@@ -36,10 +38,12 @@ public class AudioManager : MonoBehaviour
         audioSource.Play();
     }
 
-    public IEnumerator FadeOutSound(float duration){
+    public IEnumerator FadeOutSound(float duration)
+    {
         float startVolume = audioSource.volume;
         float time = 0f;
-        while(time < duration){
+        while(time < duration)
+        {
             time += Time.deltaTime;
             audioSource.volume = Mathf.Lerp(startVolume, 0f, time / duration);
             yield return null;
@@ -51,15 +55,16 @@ public class AudioManager : MonoBehaviour
         IsAudioSourceChanged = true;
     }
 
-    public IEnumerator FadeInSound(int category, float duration){
+    public IEnumerator FadeInSound(int category, float duration)
+    {
+        IsAudioSourceChanged = false;
 
-        IsAudioSourceChanged = true;
-
-        audioSource.clip = _mainBGMs[(int)category];
+        audioSource.clip = _mainBGMs[category];
         audioSource.Play();
 
         float time = 0f;
-        while (time < duration){
+        while (time < duration)
+        {
             time += Time.deltaTime;
             audioSource.volume = Mathf.Lerp(0f, 1f, time / duration);
             yield return null;

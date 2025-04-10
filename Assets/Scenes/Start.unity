@@ -810,11 +810,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mainBGMs:
-  - {fileID: 8300000, guid: 7025855a55c0a9043bbd5a6874aac846, type: 3}
-  - {fileID: 8300000, guid: 153610da202b1164d9008859a64eabdd, type: 3}
-  - {fileID: 8300000, guid: 0d57bd42956de7d4da9cb55186589b4c, type: 3}
-  - {fileID: 8300000, guid: 07a54c3394893ed44adc9aedc8e22878, type: 3}
-  - {fileID: 8300000, guid: 8017b526b0794f34a9928a3d9a24f0fd, type: 3}
+  - {fileID: 8300000, guid: b13f575ee51a2dc46a149072e691e068, type: 3}
+  - {fileID: 8300000, guid: b6b398573be43594f9593039cb389627, type: 3}
+  - {fileID: 8300000, guid: 82dc3275fbeadc44886ea1b1c362d9d2, type: 3}
+  - {fileID: 8300000, guid: 3505b1725af541f4ab9259ed8a641b0d, type: 3}
+  - {fileID: 8300000, guid: 6e0b004467ec5b44c90ea02fc181e195, type: 3}
 --- !u!82 &1711782992
 AudioSource:
   m_ObjectHideFlags: 0
