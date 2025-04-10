@@ -253,40 +253,4 @@ public class GameManager : MonoBehaviour
         _countDownText.SetActive(false);
         IsGameActive = true;
     }
-        private IEnumerator MovePanelUp(GameObject go, Animator animator, float _delay)
-    {
-        go.SetActive(true);
-        yield return new WaitForSeconds(_delay);
-        animator.SetBool("IsUp", true);
-    }
-
-    private IEnumerator MovePanelDown(GameObject go, Animator animator, float _delay)
-    {
-        animator.SetBool("IsUp", false);
-        yield return new WaitForSeconds(_delay);
-        go.SetActive(false);   
-    }
-
-    private IEnumerator ShowCountDown(int _delay)
-    {
-        Text text = Helper.GetComponentHelper<Text>(_countDownText);
-        Animator animator = Helper.GetComponentHelper<Animator>(_countDownText);
-        int delay = _delay;
-
-        _timeAnimator.SetBool("IsDown_b",true);
-        yield return new WaitForSeconds(1);
-
-        while(delay >= 0){
-
-            if(delay == 0) {text.text = "시작!"; delay--; }
-            else {text.text = delay--.ToString(); }
-
-
-            animator.SetTrigger("CountDown_Trigger");
-            yield return new WaitForSeconds(1.0f);
-            animator.SetBool("IsOn",true);
-        }
-        _countDownText.SetActive(false);
-        IsGameActive = true;
-    }
 }
