@@ -3,6 +3,10 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    public void FromStartToCategory()
+    {
+        SceneManager.LoadScene("Category");
+    }
     public void GoToStart()
     {
         StartCoroutine(AudioManager.Instance.FadeOutSound(0));

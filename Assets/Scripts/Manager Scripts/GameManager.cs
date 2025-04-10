@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         startTime = 0;
         audioSource = Helper.GetComponentHelper<AudioSource>(gameObject);
 
-        StartCoroutine(AudioManager.Instance.FadeInSound(0);)
+        StartCoroutine(AudioManager.Instance.FadeInSound(0));
 
         // Initialize Hint Button Action
         Button button = Helper.GetComponentHelper<Button>(_hintButton);
