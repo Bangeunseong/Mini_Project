@@ -40,7 +40,7 @@ public class AudioManager : MonoBehaviour
 }
 
 
-public IEnumertor FadeOutSound ( float duration)
+/*public IEnumertor FadeOutSound ( float duration)
 {
     float startVolume = AudioSource.volume;
     float time = 0f;
@@ -74,3 +74,4 @@ public IEnumertor FadeInSound ( float duration)
 
     AudioSource.volume = 1f;
 }
+*/
