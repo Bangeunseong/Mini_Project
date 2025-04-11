@@ -5,7 +5,7 @@ using UnityEngine;
 public class MemberTable : ScriptableObject
 {
     [SerializeField] private List<MemberInfo> _members = new List<MemberInfo>();
-    private Dictionary<int, MemberInfo> MemberDicts = new();
+    public Dictionary<int, MemberInfo> MemberDicts = new();
 
     private void OnEnable()
     {
