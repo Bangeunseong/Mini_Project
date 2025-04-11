@@ -25,7 +25,7 @@ public class BoardController : MonoBehaviour
 
         // Image Randomization
         int[] arr = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19 };
-        arr = arr.OrderBy(x => Random.Range(0f, 19f)).ToArray();
+        arr = Fisher_Yates_Shuffle(arr);
 
         Vector2 position = new Vector2(xOffset, yOffset);
         for (int i = 0; i < cardCount; i++)
@@ -42,5 +42,20 @@ public class BoardController : MonoBehaviour
         }
 
         GameManager.Instance.CardCount = arr.Length;
+    }
+
+    // Shuffling Method
+    private int[] Fisher_Yates_Shuffle(int[] arr)
+    {
+        // Fisher-Yates Shuffle
+        for (int i = arr.Length - 1; i > 0; i--)
+        {
+            int j = Random.Range(0, i + 1);
+            int temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+
+        return arr;
     }
 }
