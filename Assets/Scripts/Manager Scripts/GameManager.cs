@@ -81,16 +81,14 @@ public class GameManager : MonoBehaviour
         button.onClick.AddListener(() => {
             if(!IsGameActive) { return; }
 
-            if (!IsHintActive) { 
-                IsHintActive = !IsHintActive;
+            if (!_hintPanel.activeInHierarchy && !IsHintActive) {
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _on;
 
                 // Activate Hint Panel and Move Up
-                StartCoroutine(MovePanelUp(_hintPanel, _hintPanelAnimator, 0.05f));
+                StartCoroutine(MovePanelUp(_hintPanel, _hintPanelAnimator, 0.7f));
             }
-            else {
-                IsHintActive = !IsHintActive;
+            else if(_hintPanel.activeInHierarchy && IsHintActive) {
                 Image img = Helper.GetComponentHelper<Image>(_hintButton);
                 img.sprite = _off;
 
@@ -106,8 +104,8 @@ public class GameManager : MonoBehaviour
             img.sprite = memberTable.GetMemberInfoById(i / 2).PairOfImages[(int)Category].Values[i % 2].Image;
         }
 
-        // Start Game After 5 seconds and move down time label
-        StartCoroutine(ShowCountDown(5));
+        // Start Game After 3 seconds and move down time label
+        StartCoroutine(ShowCountDown(3));
     }
 
     void Update()
@@ -232,14 +230,16 @@ public class GameManager : MonoBehaviour
     private IEnumerator MovePanelUp(GameObject go, Animator animator, float _delay)
     {
         go.SetActive(true);
-        yield return new WaitForSeconds(_delay);
         animator.SetBool("IsUp_b", true);
+        yield return new WaitForSeconds(_delay);
+        IsHintActive = !IsHintActive;
     }
 
     private IEnumerator MovePanelDown(GameObject go, Animator animator, float _delay)
     {
         animator.SetBool("IsUp_b", false);
         yield return new WaitForSeconds(_delay);
+        IsHintActive = !IsHintActive;
         go.SetActive(false);
     }
 
@@ -247,7 +247,7 @@ public class GameManager : MonoBehaviour
     {
         Text text = Helper.GetComponentHelper<Text>(_countDownText);
         Animator animator = Helper.GetComponentHelper<Animator>(_countDownText);
-        int delay = _delay;
+        int delay = _delay + 1;
 
         _timeAnimator.SetBool("IsDown_b", true);
         yield return new WaitForSeconds(1.5f);
@@ -256,6 +256,7 @@ public class GameManager : MonoBehaviour
         {
             // Change Text
             if (delay == 0) { text.text = "����!"; delay--; }
+            else if(delay == _delay + 1) { text.text = "�غ�"; delay--; }
             else {
                 Debug.Log($"Countdown : {delay}");
                 text.text = delay--.ToString();

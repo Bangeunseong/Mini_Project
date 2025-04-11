@@ -28,4 +28,13 @@ public class GameController : MonoBehaviour
         SceneManager.LoadScene("Main");
 
     }
+
+    public void QuitGame()
+    {
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
 }
